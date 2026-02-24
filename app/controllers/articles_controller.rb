@@ -1,4 +1,6 @@
 class ArticlesController < ApplicationController
+  # 記事の作成・更新・削除をする時だけ、事前に require_login (認証チェック) を走らせる
+  before_action :require_login, only: %i[ create update destroy ]
   before_action :set_article, only: %i[ show update destroy ]
 
   # GET /articles

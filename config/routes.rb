@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   get "/hello", to: "hello#index"
+  post "/login", to: "sessions#create"
 end

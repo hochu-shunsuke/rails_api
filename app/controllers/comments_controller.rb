@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+    before_action :require_login, only: [ :create ]
+
     def create
         # 1. URLの :article_id を元に、親となる「記事」を探してくる
         @article = Article.find(params[:article_id])
