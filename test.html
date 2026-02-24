@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>API Test</title>
+</head>
+
+<body>
+    <h2>1. ログイン</h2>
+    <button id="loginBtn">ログインしてJWT取得</button>
+    <pre id="loginStatus"></pre>
+
+    <h2>2. コメント投稿</h2>
+    <input type="text" id="commentContent" value="テスト投稿！">
+    <button id="commentBtn">APIに送信</button>
+    <pre id="commentStatus"></pre>
+
+    <script>
+        let jwtToken = null;
+
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            const res = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: 'test@example.com', password: 'password123' })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                jwtToken = data.token;
+                document.getElementById('loginStatus').innerText = "ログイン成功！ JWT: " + jwtToken;
+            } else {
+                document.getElementById('loginStatus').innerText = "エラー: " + data.error;
+            }
+        });
+
+        document.getElementById('commentBtn').addEventListener('click', async () => {
+            const content = document.getElementById('commentContent').value;
+            const res = await fetch('http://localhost:3000/articles/1/comments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': jwtToken ? `Bearer ${jwtToken}` : ''
+                },
+                body: JSON.stringify({ content: content })
+            });
+            const data = await res.json();
+            document.getElementById('commentStatus').innerText = res.ok ? "投稿成功！" : "エラー: " + JSON.stringify(data);
+        });
+    </script>
+</body>
+
+</html>
