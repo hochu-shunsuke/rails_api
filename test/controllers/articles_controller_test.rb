@@ -4,7 +4,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @article = articles(:one)
     @user = users(:one)
-    
+
     # 認証用のJWTトークンを生成
     payload = { user_id: @user.id, exp: 24.hours.from_now.to_i }
     @token = JWT.encode(payload, Rails.application.secret_key_base)

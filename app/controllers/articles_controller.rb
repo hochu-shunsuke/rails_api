@@ -3,11 +3,19 @@ class ArticlesController < ApplicationController
   before_action :require_login, only: %i[ create update destroy ]
   before_action :set_article, only: %i[ show update destroy ]
 
-  # GET /articles
-  def index
-    @articles = Article.all
+   # GET /articles
+   def index
+    @articles = Article.includes(:comments).all
 
-    render json: @articles
+    # 記事と、それに紐づくコメントを一緒に返す
+    render json: @articles.map { |article|
+      {
+        id: article.id,
+        title: article.title,
+        content: article.content,
+        comments: article.comments.map(&:content)
+      }
+    }
   end
 
   # GET /articles/1
