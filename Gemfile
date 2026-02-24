@@ -50,3 +50,5 @@ group :development, :test do
 end
 
 gem "rack-cors", "~> 3.0"
+
+gem "bcrypt", "~> 3.1"
