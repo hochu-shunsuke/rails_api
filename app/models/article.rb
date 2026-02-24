@@ -3,6 +3,6 @@ class Article < ApplicationRecord
     has_many :comments, dependent: :destroy
 
     # バリデーション
-    validates :title, presence: true, length: { minimum:3, maximum: 50 }
+    validates :title, presence: true, length: { minimum: 3, maximum: 50 }
     validates :content, presence: true
 end
